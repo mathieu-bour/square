@@ -54,6 +54,8 @@ jobs:
       - name: Run against the foo sample
         id: square
         uses: ./
+        with:
+          working-directory: samples/foo
       - name: Dump the results
         run: echo "$RESULTS" | jq
         env:
