@@ -23,6 +23,7 @@ export default (dir: string = workdir()): Manifest => {
   }
 
   const ls = readdirSync(dir);
+  console.log(ls);
   const givenManifest = getInput('manifest');
   const search = givenManifest !== '' ? [givenManifest] : [...WELL_KNOWN_NAMES];
   const found = search.find(m => ls.includes(m));
@@ -31,7 +32,7 @@ export default (dir: string = workdir()): Manifest => {
     throw new FileNotFoundError('Unable to find a valid manifest file', search);
   }
 
-  info(`Using manifest file: ${found}`);
+  info(`Using manifest file: ${found} in ${dir}`);
   const raw = parse(resolve(dir, found));
 
   return (cached = Object.entries(raw).reduce((acc, [key, val]) => {

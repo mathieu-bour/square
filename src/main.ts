@@ -1,4 +1,4 @@
-import { getInput } from '@actions/core';
+import { getInput, info } from '@actions/core';
 import * as core from '@actions/core';
 import { context } from '@actions/github';
 import getConfig from './lib/config';

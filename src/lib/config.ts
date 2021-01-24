@@ -57,7 +57,7 @@ export default (dir: string = workdir()): Config => {
     throw new FileNotFoundError(`Unable to find a valid configuration file in ${dir}.`, search);
   }
 
-  info(`Using configuration file: ${found}`);
+  info(`Using configuration file: ${found} in ${dir}`);
   const raw = parse<Config | { square: Config }>(resolve(dir, found));
 
   let config: Config;
