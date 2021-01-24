@@ -1,11 +1,22 @@
-name: Your action name
-author: Your name
+name: Square
+author: Mathieu Bour
 description: Your description
 # Use https://haya14busa.github.io/github-action-brandings/
 branding:
-  color: blue
+  color: red
   icon: upload-cloud
 runs:
   using: 'node12'
   main: 'dist/index.js'
-inputs: {}
+inputs:
+  working-directory:
+    description: The working directory. If not provided, fallback to the current working directory.
+    required: false
+  release:
+    description: The release template string.
+    default: '%version%+%build%.%short-sha%'
+    required: false
+  image:
+    description: The docker image template string.
+    default: '%image%:%version%-%build%.%short-sha%'
+    required: false

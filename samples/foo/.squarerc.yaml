@@ -1,0 +1,6 @@
+git:
+  short-sha-length: 6
+environments:
+  production: main
+docker:
+  image: foo/bar

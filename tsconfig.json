@@ -15,7 +15,7 @@
       "node_modules/@types"
     ]
   },
-  "files": [
-    "src/main.ts"
+  "include": [
+    "src/**/*.ts"
   ]
 }

@@ -1,7 +1,7 @@
 {
-  "name": "@mathieu-bour/action-template",
+  "name": "@mathieu-bour/square",
   "version": "1.0.0",
-  "description": "A template for GitHub Actions which include the compilation toolchain as well as the required CI/CD workflows and quality tools.",
+  "description": "Square",
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist",
@@ -25,13 +25,18 @@
     "email": "mathieu.tin.bour@gmail.com",
     "url": "https://github.com/mathieu-bour"
   },
-  "repository": "github:mathieu-bour/action-template",
+  "repository": "github:mathieu-bour/square",
   "dependencies": {
-    "@actions/core": "^1.2.6"
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "constant-case": "^3.0.4",
+    "yaml": "^1.10.0",
+    "yup": "^0.32.8"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/node": "^12.19.15",
+    "@types/yup": "^0.29.11",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
     "esbuild": "^0.8.34",

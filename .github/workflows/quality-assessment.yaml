@@ -45,3 +45,16 @@ jobs:
         run: npm install
       - name: Run Jest
         run: npm run test
+  end-to-end:
+    name: Test against a sample
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run against the foo sample
+        id: square
+        uses: ./dist
+      - name: Dump the results
+        run: echo "$RESULTS" | jq
+        env:
+          RESULTS: ${{ toJSON(steps.square.outputs) }}

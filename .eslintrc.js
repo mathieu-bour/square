@@ -1,10 +1,10 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: 'tsconfig.json',
+    project: ['tsconfig.json', 'tsconfig.spec.json'],
     sourceType: 'module',
   },
-  ignorePatterns: ['.*.js', 'src/**/*.spec.ts'], // Ignore JS dotfiles, as they are configurations files
+  ignorePatterns: ['/*.js', 'src/**/*.spec.ts'], // Ignore JS dotfiles, as they are configurations files
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/eslint-recommended',
