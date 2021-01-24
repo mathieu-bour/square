@@ -1,0 +1,11 @@
+name: Your action name
+author: Your name
+description: Your description
+# Use https://haya14busa.github.io/github-action-brandings/
+branding:
+  color: blue
+  icon: upload-cloud
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+inputs: {}
