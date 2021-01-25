@@ -1,4 +1,4 @@
-name: Square
+name: Square Normalizer
 author: Mathieu Bour
 description: Normalize outputs based on package manifests and GitHub Actions context.
 branding:
