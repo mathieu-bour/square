@@ -6,4 +6,6 @@ module.exports = {
       tsconfig: 'tsconfig.spec.json',
     },
   },
+  coverageReporters: ['clover'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.spec/ts'],
 };
