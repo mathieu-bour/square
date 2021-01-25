@@ -48,6 +48,9 @@ jobs:
   end-to-end:
     name: Test against a sample
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        sample: [ dot-yaml, package-json ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -55,7 +58,7 @@ jobs:
         id: square
         uses: ./
         with:
-          working-directory: samples/foo
+          working-directory: samples/${{ matrix.sample }}
       - name: Dump the results
         run: echo "$RESULTS" | jq
         env:

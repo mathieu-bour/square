@@ -266,10 +266,10 @@ var require_core = __commonJS((exports2) => {
     command_1.issue("warning", message instanceof Error ? message.toString() : message);
   }
   exports2.warning = warning;
-  function info4(message) {
+  function info3(message) {
     process.stdout.write(message + os.EOL);
   }
-  exports2.info = info4;
+  exports2.info = info3;
   function startGroup(name) {
     command_1.issue("group", name);
   }
@@ -819,12 +819,12 @@ var require_http_client = __commonJS((exports2) => {
         throw new Error("Client has already been disposed.");
       }
       let parsedUrl = new URL(requestUrl);
-      let info4 = this._prepareRequest(verb, parsedUrl, headers);
+      let info3 = this._prepareRequest(verb, parsedUrl, headers);
       let maxTries = this._allowRetries && RetryableHttpVerbs.indexOf(verb) != -1 ? this._maxRetries + 1 : 1;
       let numTries = 0;
       let response;
       while (numTries < maxTries) {
-        response = await this.requestRaw(info4, data);
+        response = await this.requestRaw(info3, data);
         if (response && response.message && response.message.statusCode === HttpCodes.Unauthorized) {
           let authenticationHandler;
           for (let i = 0; i < this.handlers.length; i++) {
@@ -834,7 +834,7 @@ var require_http_client = __commonJS((exports2) => {
             }
           }
           if (authenticationHandler) {
-            return authenticationHandler.handleAuthentication(this, info4, data);
+            return authenticationHandler.handleAuthentication(this, info3, data);
           } else {
             return response;
           }
@@ -857,8 +857,8 @@ var require_http_client = __commonJS((exports2) => {
               }
             }
           }
-          info4 = this._prepareRequest(verb, parsedRedirectUrl, headers);
-          response = await this.requestRaw(info4, data);
+          info3 = this._prepareRequest(verb, parsedRedirectUrl, headers);
+          response = await this.requestRaw(info3, data);
           redirectsRemaining--;
         }
         if (HttpResponseRetryCodes.indexOf(response.message.statusCode) == -1) {
@@ -878,7 +878,7 @@ var require_http_client = __commonJS((exports2) => {
       }
       this._disposed = true;
     }
-    requestRaw(info4, data) {
+    requestRaw(info3, data) {
       return new Promise((resolve3, reject) => {
         let callbackForResult = function(err, res) {
           if (err) {
@@ -886,13 +886,13 @@ var require_http_client = __commonJS((exports2) => {
           }
           resolve3(res);
         };
-        this.requestRawWithCallback(info4, data, callbackForResult);
+        this.requestRawWithCallback(info3, data, callbackForResult);
       });
     }
-    requestRawWithCallback(info4, data, onResult) {
+    requestRawWithCallback(info3, data, onResult) {
       let socket;
       if (typeof data === "string") {
-        info4.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
+        info3.options.headers["Content-Length"] = Buffer.byteLength(data, "utf8");
       }
       let callbackCalled = false;
       let handleResult = (err, res) => {
@@ -901,7 +901,7 @@ var require_http_client = __commonJS((exports2) => {
           onResult(err, res);
         }
       };
-      let req = info4.httpModule.request(info4.options, (msg) => {
+      let req = info3.httpModule.request(info3.options, (msg) => {
         let res = new HttpClientResponse(msg);
         handleResult(null, res);
       });
@@ -912,7 +912,7 @@ var require_http_client = __commonJS((exports2) => {
         if (socket) {
           socket.end();
         }
-        handleResult(new Error("Request timeout: " + info4.options.path), null);
+        handleResult(new Error("Request timeout: " + info3.options.path), null);
       });
       req.on("error", function(err) {
         handleResult(err, null);
@@ -934,27 +934,27 @@ var require_http_client = __commonJS((exports2) => {
       return this._getAgent(parsedUrl);
     }
     _prepareRequest(method, requestUrl, headers) {
-      const info4 = {};
-      info4.parsedUrl = requestUrl;
-      const usingSsl = info4.parsedUrl.protocol === "https:";
-      info4.httpModule = usingSsl ? https : http;
+      const info3 = {};
+      info3.parsedUrl = requestUrl;
+      const usingSsl = info3.parsedUrl.protocol === "https:";
+      info3.httpModule = usingSsl ? https : http;
       const defaultPort = usingSsl ? 443 : 80;
-      info4.options = {};
-      info4.options.host = info4.parsedUrl.hostname;
-      info4.options.port = info4.parsedUrl.port ? parseInt(info4.parsedUrl.port) : defaultPort;
-      info4.options.path = (info4.parsedUrl.pathname || "") + (info4.parsedUrl.search || "");
-      info4.options.method = method;
-      info4.options.headers = this._mergeHeaders(headers);
+      info3.options = {};
+      info3.options.host = info3.parsedUrl.hostname;
+      info3.options.port = info3.parsedUrl.port ? parseInt(info3.parsedUrl.port) : defaultPort;
+      info3.options.path = (info3.parsedUrl.pathname || "") + (info3.parsedUrl.search || "");
+      info3.options.method = method;
+      info3.options.headers = this._mergeHeaders(headers);
       if (this.userAgent != null) {
-        info4.options.headers["user-agent"] = this.userAgent;
+        info3.options.headers["user-agent"] = this.userAgent;
       }
-      info4.options.agent = this._getAgent(info4.parsedUrl);
+      info3.options.agent = this._getAgent(info3.parsedUrl);
       if (this.handlers) {
         this.handlers.forEach((handler) => {
-          handler.prepareRequest(info4.options);
+          handler.prepareRequest(info3.options);
         });
       }
-      return info4;
+      return info3;
     }
     _mergeHeaders(headers) {
       const lowercaseKeys = (obj) => Object.keys(obj).reduce((c, k) => (c[k.toLowerCase()] = obj[k], c), {});
@@ -15730,8 +15730,8 @@ var require_dist5 = __commonJS((exports2) => {
 });
 
 // src/main.ts
-var import_core5 = __toModule(require_core());
 var core = __toModule(require_core());
+var import_core5 = __toModule(require_core());
 var import_github = __toModule(require_github());
 
 // src/lib/config.ts
@@ -15840,7 +15840,6 @@ var manifest_default = (dir = workdir_default()) => {
     return cached2;
   }
   const ls = import_fs3.readdirSync(dir);
-  console.log(ls);
   const givenManifest = import_core3.getInput("manifest");
   const search2 = givenManifest !== "" ? [givenManifest] : [...WELL_KNOWN_NAMES];
   const found = search2.find((m) => ls.includes(m));
@@ -15878,7 +15877,7 @@ var render_default = (template, variables) => {
 
 // src/main.ts
 async function main() {
-  var _a;
+  var _a, _b, _c;
   const exports2 = {};
   const manifest = manifest_default();
   const config = config_default();
@@ -15886,10 +15885,12 @@ async function main() {
   const ref = import_github.context.ref.replace(/^refs\/(?:heads|tags)\//, "");
   const found = Object.entries(config.environments).find(([, exp]) => ref.match(new RegExp(exp)));
   exports2.environment = found ? found[0] : null;
-  exports2["build"] = import_github.context.runNumber;
-  exports2["short-sha"] = import_github.context.sha.substr(0, parseInt((_a = config.git["short-sha-length"]) != null ? _a : "7", 10));
+  exports2.image = (_b = (_a = config.docker) == null ? void 0 : _a.image) != null ? _b : "";
+  exports2.build = import_github.context.runNumber;
+  exports2["short-sha"] = import_github.context.sha.substr(0, parseInt((_c = config.git["short-sha-length"]) != null ? _c : "7", 10));
   exports2.release = render_default(import_core5.getInput("release"), exports2);
-  exports2.image = render_default(import_core5.getInput("image"), exports2);
+  exports2["image-release"] = render_default(import_core5.getInput("image-release"), exports2);
+  exports2["image-latest"] = render_default(import_core5.getInput("image-latest"), exports2);
   Object.entries(exports2).forEach(([key, val]) => output_default(key, val));
 }
 main().catch((e) => {

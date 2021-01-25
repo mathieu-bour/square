@@ -16,7 +16,11 @@ inputs:
     description: The release template string.
     default: '%version%+%build%.%short-sha%'
     required: false
-  image:
-    description: The docker image template string.
+  image-release:
+    description: The Docker Image release template string.
     default: '%image%:%version%-%build%.%short-sha%'
+    required: false
+  image-latest:
+    description: The Docker Image environment template string.
+    default: '%image%:latest-%environment%'
     required: false

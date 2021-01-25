@@ -23,7 +23,6 @@ export default (dir: string = workdir()): Manifest => {
   }
 
   const ls = readdirSync(dir);
-  console.log(ls);
   const givenManifest = getInput('manifest');
   const search = givenManifest !== '' ? [givenManifest] : [...WELL_KNOWN_NAMES];
   const found = search.find(m => ls.includes(m));
