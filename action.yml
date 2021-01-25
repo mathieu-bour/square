@@ -1,7 +1,6 @@
 name: Square
 author: Mathieu Bour
-description: Your description
-# Use https://haya14busa.github.io/github-action-brandings/
+description: Normalize outputs based on package manifests and GitHub Actions context.
 branding:
   color: red
   icon: upload-cloud
