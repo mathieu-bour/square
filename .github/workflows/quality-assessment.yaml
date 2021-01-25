@@ -60,6 +60,6 @@ jobs:
         with:
           working-directory: samples/${{ matrix.sample }}
       - name: Dump the results
-        run: echo "$RESULTS" | jq
+        run: echo "$RESULTS" | jq -C
         env:
           RESULTS: ${{ toJSON(steps.square.outputs) }}
