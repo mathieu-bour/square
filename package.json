@@ -10,6 +10,7 @@
     "lint:fix": "eslint --fix \"src/**\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "prebuild": "npm run clean",
     "build": "node .esbuildrc.js"
   },
