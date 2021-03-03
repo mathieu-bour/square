@@ -1,6 +1,7 @@
-git:
-  short-sha-length: 6
+short-sha-length: 6
+image: foo/bar
 environments:
-  production: main
-docker:
-  image: foo/bar
+  production:
+    tags: [v*]
+  edge:
+    branches: [main]

@@ -1,42 +1,52 @@
-import * as core from '@actions/core';
-import { getInput } from '@actions/core';
+import { setFailed } from '@actions/core';
 import { context } from '@actions/github';
-import getConfig from './lib/config';
-import getManifest from './lib/manifest';
-import output from './lib/output';
-import render from './lib/render';
+import { getConfig } from './lib/getConfig';
+import { getEnvironment } from './lib/getEnvironment';
+import { getRef } from './lib/getRef';
+import { getVersion } from './lib/getVersion';
+import { output } from './utils/output';
+import { render } from './utils/render';
 
 async function main(): Promise<void> {
-  const exports: Record<string, any> = {};
-  const manifest = getManifest();
+  // Gather the data
+  const ref = getRef();
   const config = getConfig();
+  const { name, environment } = getEnvironment(config, ref);
+  const version = getVersion();
 
-  // Version
-  exports.version = manifest.version;
+  // Set the action variables
+  const variables = {
+    sha: context.sha,
+    build: context.runNumber,
+    'short-sha': context.sha.substr(0, config['short-sha-length'] ?? 8),
+    version,
+    'ref-type': ref.type,
+    'ref-name': ref.name,
+    image: environment.image ?? config.image,
+    environment: name,
+  };
 
-  // Environment
-  const ref = context.ref.replace(/^refs\/(?:heads|tags)\//, '');
-  const found = Object.entries(config.environments).find(([, exp]: [string, string]) => ref.match(new RegExp(exp)));
-  exports.environment = found ? found[0] : null;
+  // Build the templates
+  const templates = {
+    semver: '{{ version }}+{{ build }}.{{ short-sha }}',
+    'image-tag': '{{ image }}:{{ version}}.{{ build }}.{{ short-sha }}',
+    'image-tag-latest': '{{ image }}:latest.{{ environment }}',
+    ...config.templates,
+    ...environment.templates,
+  };
 
-  // Image
-  exports.image = config.docker?.image ?? '';
+  // Build the exports
+  const exports: Record<string, any> = {
+    ...variables,
+    ...Object.entries(templates).reduce((rendered, [name, input]) => {
+      rendered[name] = render(input, variables);
+      return rendered;
+    }, {} as Record<string, string>),
+  };
 
-  // Build
-  exports.build = context.runNumber;
-
-  // Short-sha
-  exports['short-sha'] = context.sha.substr(0, parseInt(config.git['short-sha-length'] ?? '7', 10));
-
-  // Render templates
-  exports.release = render(getInput('release'), exports);
-  exports['image-release'] = render(getInput('image-release'), exports);
-  exports['image-latest'] = render(getInput('image-latest'), exports);
-
-  // Exports as outputs
-  Object.entries(exports).forEach(([key, val]) => output(key, val));
+  Object.entries(exports).forEach(([name, value]) => output(name, value));
 }
 
 main().catch(e => {
-  core.setFailed(e);
+  setFailed(e);
 });

@@ -1,8 +1,8 @@
-import render from '../../src/lib/render';
+import { render } from './render';
 
 const cases: [string, string, Record<string, any>][] = [
-  ['%version%-foobar', '1.0.0-foobar', { version: '1.0.0' }],
-  ['%foo%%bar%', 'abcdef', { foo: 'abc', bar: 'def' }],
+  ['{{ version }}-foobar', '1.0.0-foobar', { version: '1.0.0' }],
+  ['{{ foo }}{{ bar }}', 'abcdef', { foo: 'abc', bar: 'def' }],
 ];
 
 describe('parser', () => {

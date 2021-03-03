@@ -3,7 +3,7 @@ import { extname } from 'path';
 import YAML from 'yaml';
 import FileNotFoundError from '../errors/file-not-found.error';
 
-export default function parse<T = any>(path: string): T {
+export function parse<T = any>(path: string): T {
   if (!existsSync(path)) {
     throw new FileNotFoundError(path);
   }

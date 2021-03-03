@@ -1,36 +1,11 @@
 import { info } from '@actions/core';
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
-import { lazy, number, object, string } from 'yup';
 import FileNotFoundError from '../errors/file-not-found.error';
-import parse from './parser';
-import workdir from './workdir';
-
-const schema = lazy(config =>
-  object().shape({
-    git: object().shape({
-      'short-sha-length': number().min(3).max(40),
-    }),
-    environments: object(
-      Object.entries(config?.environments ?? {}).reduce((spec, [key]) => {
-        return { ...spec, [key]: string().required() };
-      }, {}),
-    ).default({}),
-    docker: object().shape({
-      image: string().required(),
-    }),
-  }),
-);
-
-interface Config {
-  git: {
-    'short-sha-length': string;
-  };
-  environments: Record<string, string>;
-  docker?: {
-    image: string;
-  };
-}
+import { Config } from '../types/config';
+import { parse } from '../utils/parser';
+import { workdir } from '../utils/workdir';
+import { schema } from './schema';
 
 const names = ['square', 'squarerc', '.square', '.squarerc'];
 const extensions = ['yaml', 'yml', 'json'];
@@ -39,17 +14,11 @@ const search = names.reduce<string[]>((acc, file) => {
 }, [] as string[]);
 search.push('package.json');
 
-let cached: Config;
-
-function isPackageJson(config: any): config is { square: Config } {
+function isPackageJson(config: object): config is { square: Config } {
   return config.hasOwnProperty('square');
 }
 
-export default (dir: string = workdir()): Config => {
-  if (cached) {
-    return cached;
-  }
-
+export function getConfig(dir: string = workdir()): Config {
   const ls = readdirSync(dir);
   const found = search.find(file => ls.includes(file));
 
@@ -72,5 +41,5 @@ export default (dir: string = workdir()): Config => {
     config = raw as Config;
   }
 
-  return (cached = (schema.validateSync(config) as unknown) as Config);
-};
+  return (schema.validateSync(config) as unknown) as Config;
+}

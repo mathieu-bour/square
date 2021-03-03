@@ -3,8 +3,8 @@
  * @param template The string template.
  * @param variables The replace variables.
  */
-export default (template: string, variables: Record<string, any>) => {
+export function render(template: string, variables: Record<string, any>) {
   return Object.entries(variables).reduce((acc, [key, val]) => {
-    return acc.replace(new RegExp(`%${key}%`, 'g'), val.toString());
+    return acc.replace(new RegExp(`\{\{ ?${key} ?}}`, 'g'), val.toString());
   }, template);
-};
+}

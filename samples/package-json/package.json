@@ -1,14 +1,14 @@
 {
   "version": "1.0.0",
   "square": {
-    "git": {
-      "short-sha-length": 6
-    },
     "environments": {
-      "production": "main"
+      "production": {
+        "branches": [
+          "main"
+        ]
+      }
     },
-    "docker": {
-      "image": "foo/bar"
-    }
+    "short-sha-length": 6,
+    "image": "foo/bar"
   }
 }
