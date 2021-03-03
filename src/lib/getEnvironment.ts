@@ -27,7 +27,7 @@ export function getEnvironment(config: Config, ref: Ref): { name: string; enviro
     }
   });
 
-  const found = sortedEnvironments.find(([name, environment]) => {
+  const found = sortedEnvironments.find(([, environment]) => {
     const match = (ref.type === 'branch' ? environment.branches : environment.tags) ?? [];
     const ignore = (ref.type === 'branch' ? environment['branches-ignore'] : environment['tags-ignore']) ?? [];
 

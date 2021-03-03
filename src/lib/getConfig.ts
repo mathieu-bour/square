@@ -14,7 +14,7 @@ const search = names.reduce<string[]>((acc, file) => {
 }, [] as string[]);
 search.push('package.json');
 
-function isPackageJson(config: object): config is { square: Config } {
+function isPackageJson(config: Config & { square?: Config }): config is { square: Config } {
   return config.hasOwnProperty('square');
 }
 

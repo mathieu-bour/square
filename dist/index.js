@@ -18503,7 +18503,7 @@ function getEnvironment(config, ref) {
       return 0;
     }
   });
-  const found = sortedEnvironments.find(([name, environment]) => {
+  const found = sortedEnvironments.find(([, environment]) => {
     var _a2, _b;
     const match = (_a2 = ref.type === "branch" ? environment.branches : environment.tags) != null ? _a2 : [];
     const ignore = (_b = ref.type === "branch" ? environment["branches-ignore"] : environment["tags-ignore"]) != null ? _b : [];
