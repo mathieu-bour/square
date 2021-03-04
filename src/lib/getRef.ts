@@ -16,7 +16,7 @@ export function getRef(): { type: 'branch' | 'tag' | 'pull_request'; name: strin
   } else if (context.eventName === 'pull_request') {
     return {
       type: 'pull_request',
-      name: (context as any).head_ref,
+      name: context.payload.pull_request?.head.ref as string,
     };
   }
   throw new Error(`Invalid ref (not a branch nor a tag), got ${context.ref}`);

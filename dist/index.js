@@ -18541,6 +18541,7 @@ function getEnvironment(config, ref) {
 // src/lib/getRef.ts
 var import_github = __toModule(require_github());
 function getRef() {
+  var _a;
   if (import_github.context.ref.match(/^refs\/heads\/.*$/)) {
     return {
       type: "branch",
@@ -18554,7 +18555,7 @@ function getRef() {
   } else if (import_github.context.eventName === "pull_request") {
     return {
       type: "pull_request",
-      name: import_github.context.head_ref
+      name: (_a = import_github.context.payload.pull_request) == null ? void 0 : _a.head.ref
     };
   }
   throw new Error(`Invalid ref (not a branch nor a tag), got ${import_github.context.ref}`);
@@ -18602,20 +18603,19 @@ function render(template, variables) {
 
 // src/main.ts
 async function main() {
-  var _a, _b, _c;
+  var _a, _b;
   const ref = getRef();
-  console.log({ref: (_a = import_github2.context.payload.pull_request) == null ? void 0 : _a.head.ref});
   const config = getConfig();
   const {name, environment} = getEnvironment(config, ref);
   const version = getVersion();
   const variables = {
     sha: import_github2.context.sha,
     build: import_github2.context.runNumber,
-    "short-sha": import_github2.context.sha.substr(0, (_b = config["short-sha-length"]) != null ? _b : 8),
+    "short-sha": import_github2.context.sha.substr(0, (_a = config["short-sha-length"]) != null ? _a : 8),
     version,
     "ref-type": ref.type,
     "ref-name": ref.name,
-    image: (_c = environment.image) != null ? _c : config.image,
+    image: (_b = environment.image) != null ? _b : config.image,
     environment: name
   };
   const templates = {
