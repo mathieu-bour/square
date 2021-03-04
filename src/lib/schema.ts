@@ -13,6 +13,8 @@ export const schema = lazy((config: Config) =>
           'branches-ignore': array().of(string()),
           tags: array().of(string()),
           'tags-ignore': array().of(string()),
+          pull_requests: array().of(string()),
+          'pull_requests-ignore': array().of(string()),
           templates: object(
             Object.keys(environment?.templates ?? {}).reduce((spec, name) => {
               spec[name] = string();

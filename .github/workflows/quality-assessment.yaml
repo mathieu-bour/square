@@ -1,7 +1,9 @@
 name: Quality assessment
 on:
   push:
-    branches: ['**']
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   lint:
     name: Lint with eslint

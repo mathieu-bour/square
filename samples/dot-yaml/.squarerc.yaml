@@ -5,3 +5,4 @@ environments:
     tags: [v*]
   edge:
     branches: [main]
+    pull_requests: ['**']

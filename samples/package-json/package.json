@@ -6,6 +6,11 @@
         "branches": [
           "main"
         ]
+      },
+      "edge": {
+        "pull_requests": [
+          "**"
+        ]
       }
     },
     "short-sha-length": 6,

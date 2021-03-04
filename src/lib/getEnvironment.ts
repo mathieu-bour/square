@@ -28,8 +28,28 @@ export function getEnvironment(config: Config, ref: Ref): { name: string; enviro
   });
 
   const found = sortedEnvironments.find(([, environment]) => {
-    const match = (ref.type === 'branch' ? environment.branches : environment.tags) ?? [];
-    const ignore = (ref.type === 'branch' ? environment['branches-ignore'] : environment['tags-ignore']) ?? [];
+    const match =
+      (() => {
+        switch (ref.type) {
+          case 'tag':
+            return environment.tags;
+          case 'branch':
+            return environment.branches;
+          case 'pull_request':
+            return environment.pull_requests;
+        }
+      })() ?? [];
+    const ignore =
+      (() => {
+        switch (ref.type) {
+          case 'tag':
+            return environment['tags-ignore'];
+          case 'branch':
+            return environment['branches-ignore'];
+          case 'pull_request':
+            return environment['pull_requests-ignore'];
+        }
+      })() ?? [];
 
     return any(ref.name, match) && !any(ref.name, ignore);
   });

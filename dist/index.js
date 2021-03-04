@@ -18440,6 +18440,8 @@ var schema = import_yup.lazy((config) => {
         "branches-ignore": import_yup.array().of(import_yup.string()),
         tags: import_yup.array().of(import_yup.string()),
         "tags-ignore": import_yup.array().of(import_yup.string()),
+        pull_requests: import_yup.array().of(import_yup.string()),
+        "pull_requests-ignore": import_yup.array().of(import_yup.string()),
         templates: import_yup.object(Object.keys((_a2 = environment == null ? void 0 : environment.templates) != null ? _a2 : {}).reduce((spec2, name) => {
           spec2[name] = import_yup.string();
           return spec2;
@@ -18505,8 +18507,26 @@ function getEnvironment(config, ref) {
   });
   const found = sortedEnvironments.find(([, environment]) => {
     var _a2, _b;
-    const match = (_a2 = ref.type === "branch" ? environment.branches : environment.tags) != null ? _a2 : [];
-    const ignore = (_b = ref.type === "branch" ? environment["branches-ignore"] : environment["tags-ignore"]) != null ? _b : [];
+    const match = (_a2 = (() => {
+      switch (ref.type) {
+        case "tag":
+          return environment.tags;
+        case "branch":
+          return environment.branches;
+        case "pull_request":
+          return environment.pull_requests;
+      }
+    })()) != null ? _a2 : [];
+    const ignore = (_b = (() => {
+      switch (ref.type) {
+        case "tag":
+          return environment["tags-ignore"];
+        case "branch":
+          return environment["branches-ignore"];
+        case "pull_request":
+          return environment["pull_requests-ignore"];
+      }
+    })()) != null ? _b : [];
     return import_micromatch.any(ref.name, match) && !import_micromatch.any(ref.name, ignore);
   });
   if (!found) {
@@ -18521,6 +18541,7 @@ function getEnvironment(config, ref) {
 // src/lib/getRef.ts
 var import_github = __toModule(require_github());
 function getRef() {
+  var _a;
   if (import_github.context.ref.match(/^refs\/heads\/.*$/)) {
     return {
       type: "branch",
@@ -18530,6 +18551,11 @@ function getRef() {
     return {
       type: "tag",
       name: import_github.context.ref.replace("refs/tags/", "")
+    };
+  } else if (import_github.context.eventName === "pull_request") {
+    return {
+      type: "pull_request",
+      name: (_a = import_github.context.payload.pull_request) == null ? void 0 : _a.head.ref
     };
   }
   throw new Error(`Invalid ref (not a branch nor a tag), got ${import_github.context.ref}`);
