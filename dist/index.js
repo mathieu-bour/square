@@ -18602,20 +18602,20 @@ function render(template, variables) {
 
 // src/main.ts
 async function main() {
-  var _a, _b;
+  var _a, _b, _c;
   const ref = getRef();
-  console.log(import_github2.context.payload.pull_request);
+  console.log({ref: (_a = import_github2.context.payload.pull_request) == null ? void 0 : _a.head.ref});
   const config = getConfig();
   const {name, environment} = getEnvironment(config, ref);
   const version = getVersion();
   const variables = {
     sha: import_github2.context.sha,
     build: import_github2.context.runNumber,
-    "short-sha": import_github2.context.sha.substr(0, (_a = config["short-sha-length"]) != null ? _a : 8),
+    "short-sha": import_github2.context.sha.substr(0, (_b = config["short-sha-length"]) != null ? _b : 8),
     version,
     "ref-type": ref.type,
     "ref-name": ref.name,
-    image: (_b = environment.image) != null ? _b : config.image,
+    image: (_c = environment.image) != null ? _c : config.image,
     environment: name
   };
   const templates = {
