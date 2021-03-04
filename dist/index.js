@@ -18604,7 +18604,7 @@ function render(template, variables) {
 async function main() {
   var _a, _b;
   const ref = getRef();
-  console.log(import_github2.context);
+  console.log(import_github2.context.payload.pull_request);
   const config = getConfig();
   const {name, environment} = getEnvironment(config, ref);
   const version = getVersion();
