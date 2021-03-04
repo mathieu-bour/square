@@ -18604,6 +18604,7 @@ function render(template, variables) {
 async function main() {
   var _a, _b;
   const ref = getRef();
+  console.log({ref});
   const config = getConfig();
   const {name, environment} = getEnvironment(config, ref);
   const version = getVersion();

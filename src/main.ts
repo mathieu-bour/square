@@ -10,6 +10,9 @@ import { render } from './utils/render';
 async function main(): Promise<void> {
   // Gather the data
   const ref = getRef();
+
+  console.log({ ref });
+
   const config = getConfig();
   const { name, environment } = getEnvironment(config, ref);
   const version = getVersion();
