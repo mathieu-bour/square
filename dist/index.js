@@ -18440,6 +18440,8 @@ var schema = import_yup.lazy((config) => {
         "branches-ignore": import_yup.array().of(import_yup.string()),
         tags: import_yup.array().of(import_yup.string()),
         "tags-ignore": import_yup.array().of(import_yup.string()),
+        pull_requests: import_yup.array().of(import_yup.string()),
+        "pull_requests-ignore": import_yup.array().of(import_yup.string()),
         templates: import_yup.object(Object.keys((_a2 = environment == null ? void 0 : environment.templates) != null ? _a2 : {}).reduce((spec2, name) => {
           spec2[name] = import_yup.string();
           return spec2;
