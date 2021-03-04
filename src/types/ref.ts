@@ -1,4 +1,4 @@
 export interface Ref {
   name: string;
-  type: 'branch' | 'tag';
+  type: 'branch' | 'tag' | 'pull_request';
 }

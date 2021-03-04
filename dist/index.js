@@ -18505,8 +18505,26 @@ function getEnvironment(config, ref) {
   });
   const found = sortedEnvironments.find(([, environment]) => {
     var _a2, _b;
-    const match = (_a2 = ref.type === "branch" ? environment.branches : environment.tags) != null ? _a2 : [];
-    const ignore = (_b = ref.type === "branch" ? environment["branches-ignore"] : environment["tags-ignore"]) != null ? _b : [];
+    const match = (_a2 = (() => {
+      switch (ref.type) {
+        case "tag":
+          return environment.tags;
+        case "branch":
+          return environment.branches;
+        case "pull_request":
+          return environment.pull_requests;
+      }
+    })()) != null ? _a2 : [];
+    const ignore = (_b = (() => {
+      switch (ref.type) {
+        case "tag":
+          return environment["tags-ignore"];
+        case "branch":
+          return environment["branches-ignore"];
+        case "pull_request":
+          return environment["pull_requests-ignore"];
+      }
+    })()) != null ? _b : [];
     return import_micromatch.any(ref.name, match) && !import_micromatch.any(ref.name, ignore);
   });
   if (!found) {
@@ -18530,6 +18548,11 @@ function getRef() {
     return {
       type: "tag",
       name: import_github.context.ref.replace("refs/tags/", "")
+    };
+  } else if (import_github.context.eventName === "pull_request") {
+    return {
+      type: "pull_request",
+      name: import_github.context.head_ref
     };
   }
   throw new Error(`Invalid ref (not a branch nor a tag), got ${import_github.context.ref}`);
