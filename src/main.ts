@@ -11,7 +11,7 @@ async function main(): Promise<void> {
   // Gather the data
   const ref = getRef();
 
-  console.log({ ref });
+  console.log(context);
 
   const config = getConfig();
   const { name, environment } = getEnvironment(config, ref);
